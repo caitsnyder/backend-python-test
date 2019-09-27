@@ -31,3 +31,5 @@ if __name__ == '__main__':
         print("ayaTodo: Database initialized.") # Added parenths
     else:
         app.run(use_reloader=True)
+
+

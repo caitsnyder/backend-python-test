@@ -4,9 +4,9 @@ from flask import (
     redirect,
     render_template,
     request,
-    session
+    session,
+    flash # Message flashing will be used for invalid input
     )
-
 
 @app.route('/')
 def home():
@@ -54,10 +54,14 @@ def todo(id):
 @app.route('/todo', methods=['GET'])
 @app.route('/todo/', methods=['GET'])
 def todos():
+    # Authenticate
     if not session.get('logged_in'):
         return redirect('/login')
+    # Pull all todos from db
     cur = g.db.execute("SELECT * FROM todos")
+    # Set todos var to query results
     todos = cur.fetchall()
+    # return the html page and make the todos var accessible
     return render_template('todos.html', todos=todos)
 
 
@@ -66,12 +70,19 @@ def todos():
 def todos_POST():
     if not session.get('logged_in'):
         return redirect('/login')
-    g.db.execute(
-        "INSERT INTO todos (user_id, description) VALUES ('%s', '%s')"
-        % (session['user']['id'], request.form.get('description', ''))
-    )
-    g.db.commit()
-    return redirect('/todo')
+    # Redirect with flash if no description entered.
+    if request.form.get('description') == '':
+        flash('Please enter a description of your task.')
+        return redirect('/todo')
+    # Insert into db and redirect if description given.
+    else:
+        g.db.execute(
+            "INSERT INTO todos (user_id, description) VALUES ('%s', '%s')"
+            % (session['user']['id'], request.form.get('description', ''))
+        )
+        g.db.commit()
+        flash('Your task has been added to the list.')
+        return redirect('/todo')
 
 
 @app.route('/todo/<id>', methods=['POST'])
