@@ -11,7 +11,8 @@ from flask import (
 @app.route('/')
 def home():
     with app.open_resource('../README.md', mode='r') as f:
-        readme = "".join(l.decode('utf-8') for l in f)
+        #readme = "".join(l.decode('utf-8') for l in f)
+        readme = "".join(l for l in f) # str object is already decoded, drop utf-8
         return render_template('index.html', readme=readme)
 
 
