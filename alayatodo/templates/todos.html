@@ -15,15 +15,23 @@
                 </td>
                 <td>
                     <!-- Form (single button-form) to delete current post -->
-                    <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}">
-                        <button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>
+                    <form method="post" action="{{ url_for('todo_modify', id=todo.id) }}">
+                        <button type="submit" name="submit_button" value="Delete" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>
                     </form>
                 </td>
                 <td>
-                    <!-- Form (single button-form) to delete current post -->
-                    <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}">
-                        <button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>
+                    <!-- Don't allow further to completed tasks -->
+                    {% if not todo.completed %}
+                    <!-- Form (single button-form) to mark current post as completed-->
+                    <form method="post" action="{{ url_for('todo_modify', id=todo.id) }}">
+                        <button type="submit" name="submit_button" value="Complete" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-ok glyphicon-white"></span></button>
                     </form>
+                    {% endif %}
+
+                    <!-- Confirm that the task was completed -->
+                    {% if todo.completed %}
+                    <em><small>Completed!</em></small>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

@@ -116,9 +116,15 @@ def todo(id):
 @app.route('/todo/<id>', methods=['POST'])
 # Authenticate
 @login_required
-def todo_delete(id):
+def todo_modify(id):
     todo = Todo.query.filter_by(id=id).first()
-    db.session.delete(todo)
-    db.session.commit()
-    flash('Your task has been deleted.')
+    if request.form['submit_button'] == 'Delete':
+        db.session.delete(todo)
+        db.session.commit()
+        flash('Your task has been deleted.')
+    else:
+        todo.completed = True
+        db.session.commit()
+        flash('Your task has been marked completed.')
+
     return redirect('/todo')

@@ -31,6 +31,7 @@ class Todo(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     description = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    completed = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<Todo #{}>'.format(self.id)
