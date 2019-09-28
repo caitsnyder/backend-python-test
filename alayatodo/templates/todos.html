@@ -4,15 +4,20 @@
 <div class="col-md-4 col-md-offset-4">
     <h1>Todo List:</h1>
     <table class="table table-striped">
-        <th>#</th><th>User</th><th>Description</th><th></th>
+        <th>#</th><th>Description</th><th></th><th></th>
         {% for todo in todos %}
             <tr>
                 <td>{{ todo.id }}</td>
-                <td>{{ todo.user_id }}</td>
                 <td>
                     <a href="{{ url_for('todo', id=todo.id) }}">
                        {{ todo.description }}
                     </a>
+                </td>
+                <td>
+                    <!-- Form (single button-form) to delete current post -->
+                    <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}">
+                        <button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>
+                    </form>
                 </td>
                 <td>
                     <!-- Form (single button-form) to delete current post -->
@@ -34,5 +39,11 @@
             </form>
         </tr>
     </table>
+    {% if prev_url %}
+        <a href="{{ prev_url }}">Newer items</a>
+    {% endif %}
+    {% if next_url %}
+        <a href="{{ next_url }}">Past items</a>
+    {% endif %}
 </div>
 {% endblock %}

@@ -40,14 +40,14 @@ def upgrade():
 
     op.bulk_insert(todo_table,
         [
-            {'user_id':'user1', 'description':'Vivamus tempus'},
-            {'user_id':'user1', 'description':'lorem ac odio'},
-            {'user_id':'user1', 'description':'Ut congue odio'},
-            {'user_id':'user1', 'description':  'Sodales finibus'},
-            {'user_id':'user1', 'description':'Accumsan nunc vitae'},
-            {'user_id':'user2', 'description':'Lorem ipsum'},
-            {'user_id':'user2', 'description':'In lacinia est'},
-            {'user_id':'user2', 'description':'Odio varius gravida'},
+            {'user_id':'1', 'description':'Vivamus tempus'},
+            {'user_id':'1', 'description':'lorem ac odio'},
+            {'user_id':'1', 'description':'Ut congue odio'},
+            {'user_id':'1', 'description':  'Sodales finibus'},
+            {'user_id':'1', 'description':'Accumsan nunc vitae'},
+            {'user_id':'2', 'description':'Lorem ipsum'},
+            {'user_id':'2', 'description':'In lacinia est'},
+            {'user_id':'2', 'description':'Odio varius gravida'},
         ]
     )
 
