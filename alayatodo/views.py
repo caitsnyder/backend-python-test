@@ -7,7 +7,7 @@ from flask import (
     session,
     url_for,
     flash, # Message flashing will be used for invalid input
-    make_response # To present todo as json object
+    jsonify # To present todo as json object
     )
 from flask_login import (
     current_user, 
@@ -100,7 +100,8 @@ def todos_POST():
     else:
         todo = Todo(
             user_id=current_user.id, 
-            description=request.form.get('description')
+            description=request.form.get('description'),
+            completed=False
             )
         db.session.add(todo)
         db.session.commit()

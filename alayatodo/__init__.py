@@ -23,7 +23,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 
 
-
+# Commented out below and enabled SQLAlchemy and Migrate instead
 # def connect_db():
 #     conn = sqlite3.connect(os.environ.get('DATABASE'))
 #     conn.row_factory = sqlite3.Row
