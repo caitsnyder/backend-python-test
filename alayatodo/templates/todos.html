@@ -40,14 +40,19 @@
         {% endfor %}
         <tr>
             <!-- Form to create new post -->
+            <!-- Use WTForms to reduce CSRF risks for user input 'description' field -->
+            {% if todo_form %}
             <form method="post" action="{{ url_for('todos_POST') }}">
+                <!-- CSRF defense via WTForms -->
+                {{ todo_form.hidden_tag() }}
                 <td colspan="3">
-                    <input type="textbox" name="description" class="small-6 small-center" placeholder="Description...">
+                    {{ todo_form.description(class_="small-6 small-center", name_="description") }}
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-sm btn-primary">Add</button>
+                    {{ todo_form.submit(class_="btn btn-sm btn-primary") }}
                 </td>
             </form>
+            {% endif %}
         </tr>
     </table>
     {% if prev_url %}

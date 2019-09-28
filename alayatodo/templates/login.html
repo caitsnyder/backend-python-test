@@ -3,6 +3,29 @@
 {% block content %}
     <div class="col-md-4 col-md-offset-4">
         <h1>Login</h1>
+        <!-- Form to log in -->
+        <!-- Use WTForms to reduce CSRF risks for user input fields -->
+        {% if form %}
+        <form class="form-horizontal login-form" method="POST" action="/login">
+            <!-- CSRF defense via WTForms -->
+            {{ form.hidden_tag() }}
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                {{ form.username(type_="text", class_="form-control", name_="username") }}
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                {{ form.password(type_="Password", class_="form-control", name_="Password") }}
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 controls">
+                {{ form.submit(class_="btn btn-primary pull-right") }}
+                </div>
+            </div>
+        </form>
+        {% endif %}
+
+<!-- 
         <form class="form-horizontal login-form" method="POST" action="/login">
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -17,8 +40,8 @@
                 <div class="col-sm-12 controls">
                     <button type="submit" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-log-in"></i> login</button>
                 </div>
-            </div>
+            </div> -->
 
-        </form>
+        <!-- </form> -->
     </div>
 {% endblock %}

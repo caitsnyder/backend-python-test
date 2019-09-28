@@ -14,23 +14,16 @@ class User(UserMixin, db.Model):
 	def __repr__(self):
 		return '<User {}>'.format(self.username)
 
-	# Improve security with password hash
-	def set_password(self, password):
-		self.password_hash = generate_password_hash(password)
+	# # Improve security with password hash
+	# def set_password(self, password):
+	# 	self.password_hash = generate_password_hash(password)
 
-	def validate_password(self, password):
-		return check_password_hash(self.check_password_hash, password)
+	# def validate_password(self, password):
+	# 	return check_password_hash(self.check_password_hash, password)
 
 login.user_loader
 def load_user(id):
 	return User.query.get(int(id))
-
-
-# users = User.query.all()
-# for user in users:
-#     user.set_password(user.password)
-
-
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

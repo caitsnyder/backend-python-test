@@ -1,4 +1,8 @@
-from alayatodo import app, db, login
+from alayatodo import (
+    app, 
+    db, 
+    login
+    )
 from flask import (
     g,
     redirect,
@@ -18,6 +22,7 @@ from flask_login import (
 from werkzeug.urls import url_parse
 from datetime import datetime
 from alayatodo.models import User, Todo
+from alayatodo.forms import LoginForm, TodoForm
 
 # Load current_user
 @login.user_loader
@@ -35,26 +40,35 @@ def home():
 ### LOGIN
 @app.route('/login', methods=['GET'])
 def login():
-    return render_template('login.html')
+    # A logged-in user should not view the login page
+    if current_user.is_authenticated:
+        return redirect('/todo')
+
+    # A user who is not logged in should be required to log in
+    form = LoginForm()
+    return render_template('login.html', form=form)
 
 
 @app.route('/login', methods=['POST'])
 def login_POST():
-    # A logged-in user cannot view the login page
-    if current_user.is_authenticated:
+    form = LoginForm()
+    if form.validate_on_submit():
+        # Set log in vars
+        username = form.username.data
+        password = form.password.data
+
+        user = User.query.filter_by(username=username).first()
+
+        # Redirect an unknown user
+        if user is None or user.password != password:
+            flash('These credentials are invalid. Please try again.')
+            return redirect('/login')
+
+        # Successful login
+        login_user(user)
+
+        # Send user on to todos page
         return redirect('/todo')
-
-    # Set form data vars
-    username = request.form.get('username')
-    password = request.form.get('password')
-
-    user = User.query.filter_by(username=username).first()
-    if user is None: #or not user.password != password:
-        flash('These credentials are invalid. Please try again.')
-        return redirect('/login')
-    login_user(user)
-    return redirect('/todo')
-
 
 ### LOGOUT
 @app.route('/logout')
@@ -68,6 +82,11 @@ def logout():
 # Authenticate
 @login_required
 def todos():
+    todo_form = TodoForm()
+    if todo_form.validate_on_submit():
+        todo = Todo(owner=current_user, description=form.description.data)
+        db.session.add(todo)
+        db.session.commit()
     # Paginate todos
     page = request.args.get('page', 1, type=int)
     todos = current_user.todos.order_by(
@@ -83,7 +102,8 @@ def todos():
         'todos.html', 
         todos=todos.items,
         next_url=next_url,
-        prev_url=prev_url
+        prev_url=prev_url,
+        todo_form=todo_form
         )
 
 

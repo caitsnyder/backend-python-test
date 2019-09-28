@@ -57,11 +57,11 @@ DONE * TASK 4: As a user I can see a confirmation message when I add/delete a to
 
 DONE * TASK 5: As a user I can see my list of todos paginated.
 
-* TASK 6: Implement an ORM database access layer so we don’t have SQL in the controller code.
+DONE * TASK 6: Implement an ORM database access layer so we don’t have SQL in the controller code.
 
 Extra tasks:
 - Fix any bug you may find. --> Committed syntax updates in main.py
-- Fix any security issue you may find.
+- Fix any security issue you may find. --> Used WTForms to prevent CSRF risk with hidden_tag()
 
 
 ### Documentation
