@@ -6,7 +6,8 @@ from flask import (
     request,
     session,
     url_for,
-    flash # Message flashing will be used for invalid input
+    flash, # Message flashing will be used for invalid input
+    make_response # To present todo as json object
     )
 from flask_login import (
     current_user, 
@@ -108,6 +109,8 @@ def todos_POST():
 
 
 @app.route('/todo/<id>', methods=['GET'])
+# Authenticate
+@login_required
 def todo(id):
     todo = Todo.query.filter_by(id=id).first()
     return render_template('todo.html', todo=todo)
@@ -128,3 +131,16 @@ def todo_modify(id):
         flash('Your task has been marked completed.')
 
     return redirect('/todo')
+
+@app.route('/todo/<id>/json', methods=['GET'])
+# Authenticate
+@login_required
+def todo_json(id):
+    todo = Todo.query.filter_by(id=id).first()
+    return jsonify({
+        'id':id,
+        'user_id': todo.user_id,
+        'description': todo.description,
+        'completed': todo.completed,
+        'timestamp': todo.timestamp
+        })

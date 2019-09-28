@@ -50,7 +50,7 @@ DONE * TASK 1: As a user I can't add a todo without a description.
 DONE * TASK 2: As a user I can mark a todo as completed.
     - Write a database migration script in `resources/`
 
-* TASK 3: As a user I can view a todo in a JSON format.
+DONE * TASK 3: As a user I can view a todo in a JSON format.
     - Ex: /todo/{id}/json => {id: 1, user_id: 1, description: "Lorem Ipsum"}
 
 DONE * TASK 4: As a user I can see a confirmation message when I add/delete a todo.
