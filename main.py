@@ -4,11 +4,10 @@ Usage:
   main.py [run]
   main.py initdb
 """
+from alayatodo import app, db
 from docopt import docopt
 import subprocess
 import os
-
-from alayatodo import app
 
 
 def _run_sql(filename):
@@ -31,5 +30,3 @@ if __name__ == '__main__':
         print("ayaTodo: Database initialized.") # Added parenths
     else:
         app.run(use_reloader=True)
-
-

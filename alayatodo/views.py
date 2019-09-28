@@ -1,4 +1,4 @@
-from alayatodo import app
+from alayatodo import app, db
 from flask import (
     g,
     redirect,
@@ -7,6 +7,9 @@ from flask import (
     session,
     flash # Message flashing will be used for invalid input
     )
+
+from alayatodo.models import User, Todo
+
 
 @app.route('/')
 def home():
@@ -58,9 +61,12 @@ def todos():
     if not session.get('logged_in'):
         return redirect('/login')
     # Pull all todos from db
-    cur = g.db.execute("SELECT * FROM todos")
-    # Set todos var to query results
-    todos = cur.fetchall()
+    todos = Todo.query
+
+    # Paginate todos
+    # page = request.args.get('page', 1, type=int)
+    # todos_paginated = todos.paginate(page, app.config['TODOS_PER_PAGE'], False)
+
     # return the html page and make the todos var accessible
     return render_template('todos.html', todos=todos)
 
@@ -76,11 +82,9 @@ def todos_POST():
         return redirect('/todo')
     # Insert into db and redirect if description given.
     else:
-        g.db.execute(
-            "INSERT INTO todos (user_id, description) VALUES ('%s', '%s')"
-            % (session['user']['id'], request.form.get('description', ''))
-        )
-        g.db.commit()
+        todo = Todo(user_id = session['user']['id'], description = request.form.get('description'))
+        db.session.add(todo)
+        db.session.commit
         flash('Your task has been added to the list.')
         return redirect('/todo')
 
@@ -89,6 +93,8 @@ def todos_POST():
 def todo_delete(id):
     if not session.get('logged_in'):
         return redirect('/login')
-    g.db.execute("DELETE FROM todos WHERE id ='%s'" % id)
-    g.db.commit()
+    todo = Todo.query.filter_by(id=id).first()
+    db.session.delete(todo)
+    db.session.commit()
+    flash('Your task has been deleted.')
     return redirect('/todo')
